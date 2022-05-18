@@ -1,0 +1,11 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "todo-lambda"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1h4gk4zuzqfzu"
+s3_prefix = "todo-lambda"
+region = "eu-central-1"
+confirm_changeset = false
+capabilities = "CAPABILITY_IAM"
+image_repositories = []

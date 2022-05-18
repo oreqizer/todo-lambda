@@ -1,0 +1,39 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  CreateTodo:
+    Type: AWS::Serverless::Function
+    Events:
+      Type: HttpApi
+      Properties:
+        Path: /
+        Method: POST
+    Properties:
+      MemorySize: 128
+      Architectures: ["arm64"]
+      Handler: bootstrap
+      Runtime: provided.al2
+      Timeout: 5
+      CodeUri: target/lambda/create-todo/
+      Environment:
+        Variables:
+          tableTodos: !Ref Todos
+      Policies:
+        DynamoDBCrudPolicy:
+          TableName: !Ref Todos
+
+  # Database
+  # 👉 https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-dynamodb-table.html
+  Todos:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
